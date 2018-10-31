@@ -1,0 +1,38 @@
+<html>
+<head>
+<style>
+#news{
+	border:1px solid red;
+	width:400px;
+	height:300px;
+}
+</style>
+</head>
+<body>
+
+<div id="news"></div>
+<button id="sport">Load Sport news</button>
+<button id="politics">Load Politics news</button>
+<button id="bussiness">Load Bussiness news</button>
+
+
+<script>
+	let arr = ['http://demo4296963.mockable.io/news-sport','http://demo4296963.mockable.io/news-politics',
+	'http://demo4296963.mockable.io/news-bussiness'];
+	let buttons = document.getElementsByTagName("button");
+	for (let i = 0; i <buttons.length; i++) {
+		buttons[i].onclick = function(e) {
+			fun(i);
+		}
+	}
+	function fun(num) {
+		let out = document.getElementById("news");
+		fetch(arr[num]).then(function(response) {
+			response.text().then(function (text) {	
+				out.innerHTML = text;
+			});
+		});	
+	}
+</script>
+</body>
+</html>

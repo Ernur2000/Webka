@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <style>
+      #cards .card{
+        border:1px solid red;
+        display:flex;
+        width:300px;
+      }
+      #cards .card .title{
+        flex-grow: 1;
+      }
+      #cards .card .price{
+        font-weight: bold;
+        padding-right: 20px;
+      }
+      #loading{
+        display: none;
+      }
+      #cards{
+        width:300px;
+        height:200px;
+        border: 1px solid blue;
+      }
+    </style>
+  </head>
+
+  <body>
+    <button>Load</button>
+    <div id="cards">
+      <img width="300px" height="200px" id="loading" src="https://upload.wikimedia.org/wikipedia/commons/b/b1/Loading_icon.gif">
+    </div>
+    <script>
+
+      let outerDiv = document.querySelector("#cards");
+      document.querySelector('button').onclick = function() {
+        document.querySelector('#loading').style.display = 'inline';
+        load();
+      }
+      function load(){
+        fetch("http://demo4296963.mockable.io/listCars").then( function(response){
+          response.json().then(function(text) {
+            text.forEach(car=>{
+              document.querySelector('#loading').style.display = 'none';
+              let div = document.createElement("div");
+              let title = document.createElement("span");
+              let price = document.createElement("span");
+              title.textContent = car["maker"] + " " + car["model"];
+              price.textContent = car["price"];
+              div.appendChild(title);
+              div.appendChild(price);
+              title.classList.add("title");
+              price.classList.add("price");
+              div.classList.add("card");
+              outerDiv.appendChild(div);
+            });
+          });
+        });
+      }
+    </script>
+  </body>
+
+</html>

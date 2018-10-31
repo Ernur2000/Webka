@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <style>
+      #cards .card{
+        border:1px solid red;
+        display:flex;
+        width:300px;
+      }
+      #cards .card .title{
+        flex-grow: 1;
+      }
+      #cards .card .price{
+        font-weight: bold;
+        padding-right: 20px;
+      }
+      #loading{
+        display: none;
+      }
+      #cards{
+        width:300px;
+        height:200px;
+        border: 1px solid blue;
+      }
+    </style>
+
+  </head>
+  <body>
+    <button>Load</button>
+    <div>
+      <button id="sortByMaker">Sort by maker</button>
+      <button id="sortByPrice">Sort by price</button>
+    </div>
+    <div id="cards">
+      <img width="300px" height="200px" id="loading" src="https://upload.wikimedia.org/wikipedia/commons/b/b1/Loading_icon.gif"/>
+    </div>
+
+    <script defer>
+    /* Write your code here */
+        var img = document.createElement('img');
+        img.src = 'https://upload.wikimedia.org/wikipedia/commons/b/b1/Loading_icon.gif';
+        img.width = 300;
+        img.height = 200;
+        //If LOAD Button is clicked it refers to Stream1 function
+        document.querySelector('button').onclick = function(){
+          document.getElementById('cards').innerHTML = '';
+          document.querySelector('#cards').appendChild(img);
+          fetch('http://demo4296963.mockable.io/listCars')
+            .then(function(response){
+              response.json().then(Stream1);
+            });      
+        };
+        document.querySelector('#sortByMaker').onclick = function(){ 
+          document.getElementById('cards').innerHTML = '';
+          document.querySelector('#cards').appendChild(img);
+          fetch('http://demo4296963.mockable.io/listCars')
+            .then(function(response){
+              response.json().then(Stream2);
+            });      
+        };
+        
+        document.querySelector('#sortByPrice').onclick = function(){
+          document.getElementById('cards').innerHTML = '';
+          document.querySelector('#cards').appendChild(img);
+          fetch('http://demo4296963.mockable.io/listCars')
+            .then(function(response){
+              response.json().then(Stream3);
+            });      
+        };
+        function Stream3(card){
+          document.getElementById('cards').innerHTML = '';
+            let arr = card;
+            console.log(1);
+            for(let i = 0; arr.length > i;i++){
+              for(let i1 = i + 1; arr.length > i1;i1++){
+                if(arr[i1].price < arr[i].price){
+                  let q = arr[i1];
+                  arr[i1] = arr[i];
+                  arr[i] = q;
+                }
+              }
+            }
+            arr.forEach(element =>{
+              let card = document.createElement('div');
+              let title = document.createElement('span');
+              let price = document.createElement('span');
+              card.classList.add('card');
+              title.classList.add('title');
+              price.classList.add('price');         
+              title.innerHTML = element.maker + " " + element.model;
+              price.innerHTML = element.price;
+              card.appendChild(title);
+              card.appendChild(price);
+              document.querySelector('#cards').appendChild(card);
+            }); 
+        }
+        function Stream1(card){
+          document.getElementById('cards').innerHTML = '';
+          card.forEach(element =>{
+            let card = document.createElement('div');
+            let title = document.createElement('span');
+            let price = document.createElement('span');
+            card.classList.add('card');
+            title.classList.add('title');
+            price.classList.add('price');         
+            title.innerHTML = element.maker + " " + element.model;
+            price.innerHTML = element.price;
+            card.appendChild(title);
+            card.appendChild(price);
+            document.querySelector('#cards').appendChild(card);
+          });      
+        }
+         //Stream2 sorts by maker
+         function Stream2(card){
+          document.getElementById('cards').innerHTML = '';
+            let arr = card;
+            console.log(1);
+            for(let i = 0; arr.length > i;i++){
+              for(let i1 = i + 1; arr.length > i1;i1++){
+                if(arr[i1].maker < arr[i].maker){
+                  let q = arr[i1];
+                  arr[i1] = arr[i];
+                  arr[i] = q;
+                }
+              }
+            }
+            arr.forEach(element =>{
+              let card = document.createElement('div');
+              let title = document.createElement('span');
+              let price = document.createElement('span');
+              card.classList.add('card');
+              title.classList.add('title');
+              price.classList.add('price');         
+              title.innerHTML = element.maker + " " + element.model;
+              price.innerHTML = element.price;
+              card.appendChild(title);
+              card.appendChild(price);
+              document.querySelector('#cards').appendChild(card);
+            }); 
+        }
+    </script>
+  </body>
+</html>
